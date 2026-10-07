@@ -1,0 +1,41 @@
+[0.385s] Invoking command in '/home/lair/DataCollection/SAM_questionnaire/src/sam_questionnaire': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/sam_questionnaire build --build-base /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build install --record /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/install.log --install-scripts $base/lib/sam_questionnaire --single-version-externally-managed install_data
+[0.514s] running egg_info
+[0.514s] creating ../../build/sam_questionnaire/sam_questionnaire.egg-info
+[0.524s] writing ../../build/sam_questionnaire/sam_questionnaire.egg-info/PKG-INFO
+[0.524s] writing dependency_links to ../../build/sam_questionnaire/sam_questionnaire.egg-info/dependency_links.txt
+[0.524s] writing entry points to ../../build/sam_questionnaire/sam_questionnaire.egg-info/entry_points.txt
+[0.524s] writing requirements to ../../build/sam_questionnaire/sam_questionnaire.egg-info/requires.txt
+[0.524s] writing top-level names to ../../build/sam_questionnaire/sam_questionnaire.egg-info/top_level.txt
+[0.524s] writing manifest file '../../build/sam_questionnaire/sam_questionnaire.egg-info/SOURCES.txt'
+[0.542s] reading manifest file '../../build/sam_questionnaire/sam_questionnaire.egg-info/SOURCES.txt'
+[0.543s] writing manifest file '../../build/sam_questionnaire/sam_questionnaire.egg-info/SOURCES.txt'
+[0.543s] running build
+[0.543s] running build_py
+[0.543s] creating /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build
+[0.543s] creating /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build/lib
+[0.543s] creating /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build/lib/sam_questionnaire
+[0.543s] copying sam_questionnaire/__init__.py -> /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build/lib/sam_questionnaire
+[0.543s] copying sam_questionnaire/sam_node.py -> /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build/lib/sam_questionnaire
+[0.543s] running install
+[0.545s] running install_lib
+[0.555s] creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire
+[0.555s] copying /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build/lib/sam_questionnaire/__init__.py -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire
+[0.555s] copying /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build/lib/sam_questionnaire/sam_node.py -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire
+[0.555s] byte-compiling /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire/__init__.py to __init__.cpython-312.pyc
+[0.555s] byte-compiling /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire/sam_node.py to sam_node.cpython-312.pyc
+[0.556s] running install_data
+[0.556s] creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/ament_index
+[0.556s] creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/ament_index/resource_index
+[0.556s] creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/ament_index/resource_index/packages
+[0.556s] copying resource/sam_questionnaire -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/ament_index/resource_index/packages
+[0.556s] copying package.xml -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire
+[0.556s] creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/launch
+[0.556s] copying launch/sam.launch.py -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/launch
+[0.557s] creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web
+[0.557s] copying web/index.html -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web
+[0.557s] running install_egg_info
+[0.566s] Copying ../../build/sam_questionnaire/sam_questionnaire.egg-info to /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire-1.0.0-py3.12.egg-info
+[0.567s] running install_scripts
+[0.629s] Installing sam_node script to /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/sam_questionnaire
+[0.629s] writing list of installed files to '/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/install.log'
+[0.642s] Invoked command in '/home/lair/DataCollection/SAM_questionnaire/src/sam_questionnaire' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/sam_questionnaire build --build-base /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build install --record /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/install.log --install-scripts $base/lib/sam_questionnaire --single-version-externally-managed install_data

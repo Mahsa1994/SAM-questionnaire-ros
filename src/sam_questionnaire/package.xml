@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>sam_questionnaire</name>
+  <version>1.0.0</version>
+  <description>Self-Assessment Manikin (Bradley &amp; Lang, 1994) web questionnaire that publishes ratings to ROS2 topics for rosbag recording.</description>
+  <maintainer email="ama.hasheminejad@gmail.com">lair</maintainer>
+  <license>MIT</license>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

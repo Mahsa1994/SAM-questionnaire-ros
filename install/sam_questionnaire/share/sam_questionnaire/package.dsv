@@ -1,0 +1,9 @@
+source;share/sam_questionnaire/hook/pythonpath.ps1
+source;share/sam_questionnaire/hook/pythonpath.dsv
+source;share/sam_questionnaire/hook/pythonpath.sh
+source;share/sam_questionnaire/hook/ament_prefix_path.ps1
+source;share/sam_questionnaire/hook/ament_prefix_path.dsv
+source;share/sam_questionnaire/hook/ament_prefix_path.sh
+source;../../build/sam_questionnaire/share/sam_questionnaire/hook/pythonpath_develop.ps1
+source;../../build/sam_questionnaire/share/sam_questionnaire/hook/pythonpath_develop.dsv
+source;../../build/sam_questionnaire/share/sam_questionnaire/hook/pythonpath_develop.sh

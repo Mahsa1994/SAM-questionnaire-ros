@@ -1,0 +1,23 @@
+[0.560s] Invoking command in '/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build --no-deps symlink_data --force
+[0.718s] running develop
+[0.813s] running egg_info
+[0.822s] writing sam_questionnaire.egg-info/PKG-INFO
+[0.822s] writing dependency_links to sam_questionnaire.egg-info/dependency_links.txt
+[0.823s] writing entry points to sam_questionnaire.egg-info/entry_points.txt
+[0.823s] writing requirements to sam_questionnaire.egg-info/requires.txt
+[0.823s] writing top-level names to sam_questionnaire.egg-info/top_level.txt
+[0.842s] reading manifest file 'sam_questionnaire.egg-info/SOURCES.txt'
+[0.843s] writing manifest file 'sam_questionnaire.egg-info/SOURCES.txt'
+[0.853s] running build_ext
+[0.853s] Creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam-questionnaire.egg-link (link to .)
+[0.853s] Installing sam_node script to /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/sam_questionnaire
+[0.853s] 
+[0.853s] Installed /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire
+[0.853s] running symlink_data
+[0.853s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/resource/sam_questionnaire -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/ament_index/resource_index/packages
+[0.854s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/package.xml -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire
+[0.854s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/launch/sam.launch.py -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/launch
+[0.854s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/index.html -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web
+[0.854s] creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.854s] error: [Errno 2] No such file or directory: '/home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img/arousal_3.png'
+[0.869s] Invoked command in '/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire' returned '1': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build --no-deps symlink_data --force

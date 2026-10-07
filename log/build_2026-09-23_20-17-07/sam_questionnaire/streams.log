@@ -1,0 +1,24 @@
+[0.381s] Invoking command in '/home/lair/DataCollection/SAM_questionnaire/src/sam_questionnaire': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/sam_questionnaire build --build-base /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build install --record /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/install.log --install-scripts $base/lib/sam_questionnaire --single-version-externally-managed install_data
+[0.511s] running egg_info
+[0.520s] writing ../../build/sam_questionnaire/sam_questionnaire.egg-info/PKG-INFO
+[0.521s] writing dependency_links to ../../build/sam_questionnaire/sam_questionnaire.egg-info/dependency_links.txt
+[0.521s] writing entry points to ../../build/sam_questionnaire/sam_questionnaire.egg-info/entry_points.txt
+[0.521s] writing requirements to ../../build/sam_questionnaire/sam_questionnaire.egg-info/requires.txt
+[0.521s] writing top-level names to ../../build/sam_questionnaire/sam_questionnaire.egg-info/top_level.txt
+[0.539s] reading manifest file '../../build/sam_questionnaire/sam_questionnaire.egg-info/SOURCES.txt'
+[0.540s] writing manifest file '../../build/sam_questionnaire/sam_questionnaire.egg-info/SOURCES.txt'
+[0.540s] running build
+[0.540s] running build_py
+[0.540s] copying sam_questionnaire/sam_node.py -> /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build/lib/sam_questionnaire
+[0.540s] running install
+[0.542s] running install_lib
+[0.552s] copying /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build/lib/sam_questionnaire/sam_node.py -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire
+[0.552s] byte-compiling /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire/sam_node.py to sam_node.cpython-312.pyc
+[0.553s] running install_data
+[0.553s] running install_egg_info
+[0.563s] removing '/home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire-1.0.0-py3.12.egg-info' (and everything under it)
+[0.563s] Copying ../../build/sam_questionnaire/sam_questionnaire.egg-info to /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire-1.0.0-py3.12.egg-info
+[0.563s] running install_scripts
+[0.623s] Installing sam_node script to /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/sam_questionnaire
+[0.623s] writing list of installed files to '/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/install.log'
+[0.635s] Invoked command in '/home/lair/DataCollection/SAM_questionnaire/src/sam_questionnaire' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/sam_questionnaire build --build-base /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build install --record /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/install.log --install-scripts $base/lib/sam_questionnaire --single-version-externally-managed install_data

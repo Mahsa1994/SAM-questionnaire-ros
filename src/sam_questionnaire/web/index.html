@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAM Questionnaire</title>
+<style>
+:root {
+  --bg: #f4f2ee;
+  --surface: #ffffff;
+  --text: #1f2328;
+  --text-2: #5b6168;
+  --text-3: #8a9097;
+  --border: #e3dfd8;
+  --valence: #1d9e75;
+  --arousal: #3a7bd5;
+  --dominance: #d0602f;
+  --ok: #22a06b;
+  --bad: #d64545;
+  --shadow: 0 1px 2px rgba(20, 20, 20, .04), 0 4px 16px rgba(20, 20, 20, .05);
+  --radius: 16px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #15171a;
+    --surface: #1e2125;
+    --text: #eceef0;
+    --text-2: #a9afb6;
+    --text-3: #7b828a;
+    --border: #2e3237;
+    --valence: #3cc394;
+    --arousal: #6aa3f0;
+    --dominance: #ef8354;
+    --shadow: none;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); }
+body {
+  font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+.page { max-width: 880px; margin: 0 auto; padding: 20px 16px 32px; }
+
+/* ── header ─────────────────────────────────────────── */
+header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+h1 { font-size: 1.5rem; font-weight: 650; letter-spacing: -.01em; }
+.lede { color: var(--text-2); margin-top: 2px; }
+.session { position: relative; flex-shrink: 0; }
+.session summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; gap: 8px;
+  font-size: .8rem; color: var(--text-3); padding: 6px 10px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface); user-select: none;
+}
+.session summary::-webkit-details-marker { display: none; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-3); }
+.status-dot.ok { background: var(--ok); }
+.status-dot.warn { background: #e0a100; }
+.status-dot.bad { background: var(--bad); }
+.session-panel {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 5; width: 290px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.12); padding: 14px; display: grid; gap: 10px; font-size: .85rem;
+}
+.session-panel label { display: grid; gap: 4px; color: var(--text-2); }
+.session-panel input[type=text] {
+  font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 7px 9px;
+}
+.session-panel .check { display: flex; gap: 8px; align-items: center; }
+.session-panel .meta { color: var(--text-3); font-size: .78rem; line-height: 1.5; }
+.session-panel code { font-size: .75rem; }
+
+/* ── dimension cards ────────────────────────────────── */
+.dim {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 16px 20px 14px; margin-bottom: 14px;
+  border-top: 4px solid var(--accent);
+}
+.dim-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.dim-name { font-size: 1.05rem; font-weight: 620; }
+.dim-q { color: var(--text-2); font-size: .9rem; }
+.dim-score {
+  font-size: 1.6rem; font-weight: 700; color: var(--accent); min-width: 1.5ch; text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.dim-score.empty { color: var(--text-3); font-weight: 400; }
+
+.scale { display: grid; grid-template-columns: repeat(9, 1fr); margin-top: 6px; }
+/* .figs { align-items: end; height: clamp(88px, 17vw, 132px); } */
+.figs { align-items: end; height: clamp(110px, 20vw, 160px); }
+.fig {
+  grid-row: 1; display: flex; justify-content: center; align-items: flex-end; height: 100%;
+  cursor: pointer; overflow: visible; -webkit-tap-highlight-color: transparent;
+}
+.fig img {
+  flex: none; max-height: 100%; max-width: 180%; height: auto; width: auto;
+  object-fit: contain; border-radius: 10px;
+  transition: transform .15s ease, filter .15s ease, outline-color .15s ease;
+  outline: 3px solid transparent; outline-offset: 3px;
+}
+.fig:hover img { transform: translateY(-2px); }
+.fig.selected img {
+  transform: scale(1.06);
+  outline-color: var(--accent);
+  filter: drop-shadow(0 4px 10px color-mix(in srgb, var(--accent) 50%, transparent));
+}
+
+.ticks { margin-top: 8px; position: relative; }
+.ticks::before {
+  content: ""; position: absolute; left: calc(100% / 18); right: calc(100% / 18); top: 50%;
+  height: 2px; background: var(--border); transform: translateY(-50%);
+}
+.tick { display: flex; justify-content: center; position: relative; }
+.tick input { position: absolute; opacity: 0; pointer-events: none; }
+.tick span {
+  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+  background: var(--surface); border: 2px solid var(--border); color: var(--text-2);
+  font-size: .9rem; font-weight: 600; cursor: pointer; font-variant-numeric: tabular-nums;
+  transition: background .12s, border-color .12s, color .12s, transform .12s;
+}
+.tick.minor span { width: 26px; height: 26px; font-size: .75rem; margin: 4px 0; }
+.tick span:hover { border-color: var(--accent); color: var(--accent); }
+.tick input:checked + span { background: var(--accent); border-color: var(--accent); color: #fff; transform: scale(1.1); }
+.tick input:focus-visible + span { outline: 3px solid color-mix(in srgb, var(--accent) 40%, transparent); outline-offset: 2px; }
+
+.ends { display: flex; justify-content: space-between; margin-top: 8px; font-size: .82rem; color: var(--text-3); }
+
+/* ── submit ─────────────────────────────────────────── */
+.actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 6px; }
+.hint { color: var(--text-3); font-size: .9rem; }
+button.submit {
+  font: inherit; font-weight: 620; font-size: 1.05rem; color: #fff; background: var(--text);
+  border: 0; border-radius: 12px; padding: 13px 34px; cursor: pointer; transition: opacity .15s, transform .1s;
+}
+@media (prefers-color-scheme: dark) { button.submit { color: var(--bg); } }
+button.submit:disabled { opacity: .25; cursor: not-allowed; }
+button.submit:not(:disabled):active { transform: scale(.98); }
+
+.toast {
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 20;
+  background: var(--bad); color: #fff; padding: 10px 18px; border-radius: 10px; font-size: .9rem;
+  box-shadow: 0 6px 24px rgba(0,0,0,.2); display: none; max-width: calc(100% - 32px);
+}
+.toast.show { display: block; }
+
+.thanks {
+  position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; text-align: center;
+  background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(4px);
+  opacity: 0; pointer-events: none; transition: opacity .25s ease;
+}
+.thanks.show { opacity: 1; pointer-events: auto; }
+.thanks .check {
+  width: 64px; height: 64px; border-radius: 50%; background: var(--ok); color: #fff;
+  display: grid; place-items: center; margin: 0 auto 14px; font-size: 2rem;
+}
+.thanks h2 { font-size: 1.4rem; font-weight: 650; }
+.thanks p { color: var(--text-2); margin-top: 4px; }
+
+@media (max-width: 560px) {
+  header { flex-direction: column; }
+  .dim { padding: 14px 12px 12px; }
+  .tick span { width: 28px; height: 28px; font-size: .8rem; }
+  .tick.minor span { width: 20px; height: 20px; font-size: .65rem; margin: 4px 0; }
+  .actions { flex-direction: column-reverse; align-items: stretch; text-align: center; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <h1>How do you feel right now?</h1>
+      <p class="lede">For each row, pick the figure that best matches how you feel. You can also pick a number between two figures.</p>
+    </div>
+    <details class="session" id="session">
+      <summary><span class="status-dot" id="status-dot"></span><span id="session-summary">Session</span></summary>
+      <div class="session-panel">
+        <label>Participant ID <input type="text" id="in-participant" autocomplete="off" placeholder="e.g. P01"></label>
+        <label>Trial / condition <input type="text" id="in-trial" autocomplete="off" placeholder="e.g. 1 or baseline"></label>
+        <label class="check"><input type="checkbox" id="in-autoinc"> Auto-increment numeric trial after submit</label>
+        <div class="meta" id="status-text">Checking connection…</div>
+        <div class="meta">Publishes <code>/sam/rating</code>, <code>/sam/pad</code>, <code>/sam/events</code></div>
+      </div>
+    </details>
+  </header>
+
+  <main id="dims"></main>
+
+  <div class="actions">
+    <span class="hint" id="hint">Rate all three rows to continue</span>
+    <button class="submit" id="submit" disabled>Submit</button>
+  </div>
+</div>
+
+<div class="thanks" id="thanks" aria-live="polite">
+  <div><div class="check">✓</div><h2>Thank you</h2><p>Your answer has been saved.</p></div>
+</div>
+<div class="toast" id="toast" role="alert"></div>
+
+<script>
+// ── Questionnaire ────────────────────────────────────────────────────────
+// Figures are photographed/illustrated SAM pictograms in web/img/, named
+// <dimension>_<anchor>.png for anchor in 1..5 (installed from resource/png/
+// via setup.py). Anchors 1,3,5,7,9 on the 1-9 scale map to pictograms 1-5.
+const DIMS = [
+  { id: 'valence', name: 'Pleasure', q: 'How unhappy or happy do you feel?',
+    low: 'Unhappy · annoyed · sad', high: 'Happy · pleased · satisfied' },
+  { id: 'arousal', name: 'Arousal', q: 'How calm or excited do you feel?',
+    low: 'Calm · relaxed · sleepy', high: 'Excited · alert · stimulated' },
+  { id: 'dominance', name: 'Dominance', q: 'How controlled or in control do you feel?',
+    low: 'Controlled · influenced', high: 'In control · influential' },
+];
+const anchorOf = v => Math.round((v - 1) / 2) + 1; // scale value 1,3,5,7,9 -> pictogram 1..5
+
+const state = {};
+let shownAt = 0, shownIso = '', nChanges = 0, submitting = false;
+const $ = id => document.getElementById(id);
+
+function build() {
+  const main = $('dims');
+  for (const d of DIMS) {
+    const card = document.createElement('section');
+    card.className = 'dim';
+    card.style.setProperty('--accent', `var(--${d.id})`);
+    let figs = '', ticks = '';
+    for (let v = 1; v <= 9; v++) {
+      if (v % 2) {
+        figs += `<label class="fig" for="${d.id}-${v}" style="grid-column:${v}" data-v="${v}" title="${v}">
+          <img src="img/${d.id}_${anchorOf(v)}.png" alt="${d.name} ${v}" draggable="false"></label>`;
+      }
+      ticks += `<label class="tick ${v % 2 ? '' : 'minor'}">
+        <input type="radio" name="${d.id}" id="${d.id}-${v}" value="${v}" aria-label="${d.name} ${v}">
+        <span>${v}</span></label>`;
+    }
+    card.innerHTML = `
+      <div class="dim-head">
+        <div><div class="dim-name">${d.name}</div><div class="dim-q">${d.q}</div></div>
+        <div class="dim-score empty" id="score-${d.id}">–</div>
+      </div>
+      <div class="scale figs" role="presentation">${figs}</div>
+      <div class="scale ticks" role="radiogroup" aria-label="${d.name}">${ticks}</div>
+      <div class="ends"><span>${d.low}</span><span>${d.high}</span></div>`;
+    card.addEventListener('change', e => select(d.id, +e.target.value));
+    main.appendChild(card);
+  }
+}
+
+function select(dim, v) {
+  state[dim] = v;
+  nChanges++;
+  const score = $('score-' + dim);
+  score.textContent = v;
+  score.classList.remove('empty');
+  document.querySelectorAll(`.fig[for^="${dim}-"]`).forEach(f => f.classList.toggle('selected', +f.dataset.v === v));
+  sendEvent({ type: 'select', dimension: dim, value: v });
+  refresh();
+  // Auto-publish as soon as all three rows are answered - no Submit click
+  // needed. Only triggered here, from a real user selection, NEVER from
+  // refresh() itself - submit() calls refresh() internally (to update the
+  // button/hint while it's in flight and again when it's done), and if the
+  // auto-submit check lived in refresh() that created a feedback loop:
+  // submit()'s own finally-block refresh() would see all three answers
+  // still set (reset() only clears them ~1.8s later, after the "Thank
+  // you" message) and `submitting` already back to false, so it would
+  // re-trigger submit() immediately, over and over, as fast as the HTTP
+  // round-trip allowed. Gating this on the change event instead of on
+  // every refresh() fixes that - submit() never calls select().
+  if (DIMS.every(d => state[d.id] != null) && !submitting) submit();
+}
+
+function refresh() {
+  const missing = DIMS.filter(d => state[d.id] == null).length;
+  $('submit').disabled = missing > 0 || submitting;
+  $('hint').textContent = missing ? `Rate ${missing === 3 ? 'all three rows' : missing + ' more row' + (missing > 1 ? 's' : '')} to continue` : 'Ready to submit';
+}
+
+function reset() {
+  for (const d of DIMS) {
+    delete state[d.id];
+    document.querySelectorAll(`input[name="${d.id}"]`).forEach(i => (i.checked = false));
+    const s = $('score-' + d.id); s.textContent = '–'; s.classList.add('empty');
+  }
+  document.querySelectorAll('.fig.selected').forEach(f => f.classList.remove('selected'));
+  nChanges = 0;
+  shownAt = Date.now();
+  shownIso = new Date(shownAt).toISOString();
+  refresh();
+  sendEvent({ type: 'shown' });
+  window.scrollTo({ top: 0 });
+}
+
+// ── Session (experimenter) settings ──────────────────────────────────────
+const store = {
+  get(k) { try { return localStorage.getItem('sam.' + k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem('sam.' + k, v); } catch {} },
+};
+const session = () => ({ participant: $('in-participant').value.trim(), trial: $('in-trial').value.trim() });
+
+function initSession() {
+  const url = new URLSearchParams(location.search);
+  $('in-participant').value = url.get('participant') ?? store.get('participant') ?? '';
+  $('in-trial').value = url.get('trial') ?? store.get('trial') ?? '1';
+  $('in-autoinc').checked = (store.get('autoinc') ?? '1') === '1';
+  for (const k of ['participant', 'trial']) {
+    $('in-' + k).addEventListener('input', () => { store.set(k, $('in-' + k).value); showSession(); });
+  }
+  $('in-autoinc').addEventListener('change', e => store.set('autoinc', e.target.checked ? '1' : '0'));
+  showSession();
+}
+
+function showSession() {
+  const s = session();
+  $('session-summary').textContent = [s.participant || 'No participant', s.trial && 'trial ' + s.trial].filter(Boolean).join(' · ');
+}
+
+// ── Talking to the ROS node ──────────────────────────────────────────────
+async function post(path, body) {
+  const r = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
+}
+
+function sendEvent(ev) {
+  post('/api/event', { ...ev, ...session(), client_epoch_ms: Date.now() }).catch(() => {});
+}
+
+async function submit() {
+  if ($('submit').disabled) return;
+  submitting = true; refresh();
+  const now = Date.now();
+  const record = {
+    ...session(),
+    valence: state.valence, arousal: state.arousal, dominance: state.dominance,
+    shown_at_iso: shownIso,
+    submitted_at_iso: new Date(now).toISOString(),
+    client_epoch_ms: now,
+    response_time_ms: now - shownAt,
+    n_changes: nChanges,
+  };
+  try {
+    await post('/api/rating', record);
+    sendEvent({ type: 'submit' });
+    if ($('in-autoinc').checked && /^\d+$/.test(record.trial)) {
+      $('in-trial').value = String(+record.trial + 1);
+      store.set('trial', $('in-trial').value);
+      showSession();
+    }
+    $('thanks').classList.add('show');
+    setTimeout(() => { $('thanks').classList.remove('show'); reset(); }, 1800);
+  } catch (e) {
+    toast('Not saved: ' + e.message + ' — please tell the experimenter.');
+  } finally {
+    submitting = false; refresh();
+  }
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 6000);
+}
+
+async function pollStatus() {
+  const dot = $('status-dot'), text = $('status-text');
+  try {
+    const s = await (await fetch('/api/status', { cache: 'no-store' })).json();
+    if (s.participant && !$('in-participant').value) {
+      $('in-participant').value = s.participant; showSession();
+    }
+    const rec = s.subscribers > 0;
+    dot.className = 'status-dot ' + (rec ? 'ok' : 'warn');
+    text.textContent = `Connected to ${s.node}. ` + (rec
+      ? `${s.subscribers} subscriber(s) on /sam/rating (recorder attached).`
+      : 'No subscriber on /sam/rating — is ros2 bag record running?');
+  } catch {
+    dot.className = 'status-dot bad';
+    text.textContent = 'Cannot reach the SAM ROS node.';
+  }
+}
+
+$('submit').addEventListener('click', submit);
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && !$('session').open) submit(); });
+build();
+initSession();
+reset();
+pollStatus();
+setInterval(pollStatus, 3000);
+</script>
+</body>
+</html>

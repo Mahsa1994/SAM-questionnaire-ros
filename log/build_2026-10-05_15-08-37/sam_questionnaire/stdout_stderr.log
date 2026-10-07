@@ -1,0 +1,21 @@
+running develop
+running egg_info
+writing sam_questionnaire.egg-info/PKG-INFO
+writing dependency_links to sam_questionnaire.egg-info/dependency_links.txt
+writing entry points to sam_questionnaire.egg-info/entry_points.txt
+writing requirements to sam_questionnaire.egg-info/requires.txt
+writing top-level names to sam_questionnaire.egg-info/top_level.txt
+reading manifest file 'sam_questionnaire.egg-info/SOURCES.txt'
+writing manifest file 'sam_questionnaire.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam-questionnaire.egg-link (link to .)
+Installing sam_node script to /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/sam_questionnaire
+
+Installed /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire
+running symlink_data
+symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/resource/sam_questionnaire -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/ament_index/resource_index/packages
+symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/package.xml -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire
+symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/launch/sam.launch.py -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/launch
+symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/index.html -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web
+creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+error: [Errno 2] No such file or directory: '/home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img/arousal_3.png'

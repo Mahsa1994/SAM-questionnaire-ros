@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: sam-questionnaire
+Version: 1.0.0
+Summary: SAM questionnaire web app publishing ratings to ROS2
+Maintainer: lair
+Maintainer-email: ama.hasheminejad@gmail.com
+License: MIT

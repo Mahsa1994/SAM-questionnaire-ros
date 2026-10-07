@@ -1,0 +1,39 @@
+running egg_info
+creating ../../build/sam_questionnaire/sam_questionnaire.egg-info
+writing ../../build/sam_questionnaire/sam_questionnaire.egg-info/PKG-INFO
+writing dependency_links to ../../build/sam_questionnaire/sam_questionnaire.egg-info/dependency_links.txt
+writing entry points to ../../build/sam_questionnaire/sam_questionnaire.egg-info/entry_points.txt
+writing requirements to ../../build/sam_questionnaire/sam_questionnaire.egg-info/requires.txt
+writing top-level names to ../../build/sam_questionnaire/sam_questionnaire.egg-info/top_level.txt
+writing manifest file '../../build/sam_questionnaire/sam_questionnaire.egg-info/SOURCES.txt'
+reading manifest file '../../build/sam_questionnaire/sam_questionnaire.egg-info/SOURCES.txt'
+writing manifest file '../../build/sam_questionnaire/sam_questionnaire.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build
+creating /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build/lib
+creating /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build/lib/sam_questionnaire
+copying sam_questionnaire/__init__.py -> /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build/lib/sam_questionnaire
+copying sam_questionnaire/sam_node.py -> /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build/lib/sam_questionnaire
+running install
+running install_lib
+creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire
+copying /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build/lib/sam_questionnaire/__init__.py -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire
+copying /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build/lib/sam_questionnaire/sam_node.py -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire
+byte-compiling /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire/__init__.py to __init__.cpython-312.pyc
+byte-compiling /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire/sam_node.py to sam_node.cpython-312.pyc
+running install_data
+creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/ament_index
+creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/ament_index/resource_index
+creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/ament_index/resource_index/packages
+copying resource/sam_questionnaire -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/ament_index/resource_index/packages
+copying package.xml -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire
+creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/launch
+copying launch/sam.launch.py -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/launch
+creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web
+copying web/index.html -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web
+running install_egg_info
+Copying ../../build/sam_questionnaire/sam_questionnaire.egg-info to /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam_questionnaire-1.0.0-py3.12.egg-info
+running install_scripts
+Installing sam_node script to /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/sam_questionnaire
+writing list of installed files to '/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/install.log'

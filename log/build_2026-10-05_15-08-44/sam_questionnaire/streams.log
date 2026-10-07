@@ -1,0 +1,44 @@
+[0.539s] Invoking command in '/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build --no-deps symlink_data
+[0.692s] running develop
+[0.780s] running egg_info
+[0.780s] creating sam_questionnaire.egg-info
+[0.789s] writing sam_questionnaire.egg-info/PKG-INFO
+[0.789s] writing dependency_links to sam_questionnaire.egg-info/dependency_links.txt
+[0.789s] writing entry points to sam_questionnaire.egg-info/entry_points.txt
+[0.789s] writing requirements to sam_questionnaire.egg-info/requires.txt
+[0.789s] writing top-level names to sam_questionnaire.egg-info/top_level.txt
+[0.789s] writing manifest file 'sam_questionnaire.egg-info/SOURCES.txt'
+[0.807s] reading manifest file 'sam_questionnaire.egg-info/SOURCES.txt'
+[0.807s] writing manifest file 'sam_questionnaire.egg-info/SOURCES.txt'
+[0.817s] running build_ext
+[0.817s] Creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages/sam-questionnaire.egg-link (link to .)
+[0.817s] Installing sam_node script to /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/sam_questionnaire
+[0.817s] 
+[0.817s] Installed /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire
+[0.817s] running symlink_data
+[0.817s] creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/ament_index
+[0.817s] creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/ament_index/resource_index
+[0.817s] creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/ament_index/resource_index/packages
+[0.817s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/resource/sam_questionnaire -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/ament_index/resource_index/packages
+[0.817s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/package.xml -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire
+[0.817s] creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/launch
+[0.817s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/launch/sam.launch.py -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/launch
+[0.817s] creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web
+[0.817s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/index.html -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web
+[0.817s] creating /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/arousal_3.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/arousal_1.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/valence_5.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/valence_2.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/arousal_5.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/arousal_4.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/dominance_5.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/valence_1.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/dominance_2.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/dominance_4.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/dominance_3.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/valence_4.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/valence_3.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/dominance_1.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.818s] symbolically linking /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/web/img/arousal_2.png -> /home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/share/sam_questionnaire/web/img
+[0.834s] Invoked command in '/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/lair/DataCollection/SAM_questionnaire/install/sam_questionnaire/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/lair/DataCollection/SAM_questionnaire/build/sam_questionnaire/build --no-deps symlink_data

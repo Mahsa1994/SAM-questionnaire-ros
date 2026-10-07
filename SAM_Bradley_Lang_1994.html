@@ -1,0 +1,270 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1.5rem 0;font-family:var(--font-sans)}
+.title{font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:.25rem}
+.subtitle{font-size:12px;color:var(--color-text-tertiary);margin-bottom:1.75rem}
+.dim{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem 1.5rem;margin-bottom:1rem}
+.dim-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1rem}
+.dim-name{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.dim-score{font-size:20px;font-weight:500}
+.sam-row{display:flex;align-items:flex-end;justify-content:center;gap:0;user-select:none;position:relative}
+.sam-cell{display:flex;flex-direction:column;align-items:center;cursor:pointer;position:relative;transition:opacity .12s}
+.sam-cell.between{width:28px;justify-content:flex-end;padding-bottom:4px}
+.sam-cell.figure{width:52px}
+.sam-cell.between .dot{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--color-border-secondary);transition:background .12s,border-color .12s}
+.sam-cell.between.selected .dot,.sam-cell.between:hover .dot{background:var(--accent);border-color:var(--accent)}
+.sam-cell.figure svg{display:block;transition:filter .12s}
+.sam-cell.figure.selected svg{filter:drop-shadow(0 0 4px var(--accent))}
+.sam-cell.figure:hover svg{opacity:.8}
+.sam-cell .val-label{font-size:9px;color:var(--color-text-tertiary);margin-top:3px;text-align:center;min-width:18px}
+.sam-cell.selected .val-label{color:var(--accent);font-weight:500}
+.ends{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--color-text-tertiary)}
+.ros-card{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:1rem 1.25rem;margin-top:1.25rem}
+.ros-head{display:flex;align-items:center;gap:8px;margin-bottom:.5rem}
+.dot-live{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.ros-label{font-size:12px;color:var(--color-text-secondary)}
+.ros-topic{font-family:var(--font-mono);font-size:11px;background:var(--color-background-tertiary);padding:2px 8px;border-radius:4px;color:var(--color-text-secondary)}
+pre.payload{font-family:var(--font-mono);font-size:12px;color:var(--color-text-primary);line-height:1.7;white-space:pre}
+.ts{font-size:10px;color:var(--color-text-tertiary);margin-top:4px}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Self-Assessment Manikin questionnaire — Bradley and Lang 1994</h2>
+<div class="title">Self-Assessment Manikin</div>
+<div class="subtitle">Click on a figure or between two figures to rate each dimension (1 – 9) — Bradley &amp; Lang, 1994</div>
+
+<div class="dim" id="dim-valence" style="--accent:#1D9E75">
+  <div class="dim-head">
+    <span class="dim-name">Valence (Pleasure)</span>
+    <span class="dim-score" style="color:#1D9E75" id="score-valence">—</span>
+  </div>
+  <div class="sam-row" id="row-valence"></div>
+  <div class="ends"><span>Unhappy / Unpleasant</span><span>Happy / Pleasant</span></div>
+</div>
+
+<div class="dim" id="dim-arousal" style="--accent:#378ADD">
+  <div class="dim-head">
+    <span class="dim-name">Arousal</span>
+    <span class="dim-score" style="color:#378ADD" id="score-arousal">—</span>
+  </div>
+  <div class="sam-row" id="row-arousal"></div>
+  <div class="ends"><span>Calm / Relaxed / Sleepy</span><span>Excited / Stimulated</span></div>
+</div>
+
+<div class="dim" id="dim-dominance" style="--accent:#D85A30">
+  <div class="dim-head">
+    <span class="dim-name">Dominance (Control)</span>
+    <span class="dim-score" style="color:#D85A30" id="score-dominance">—</span>
+  </div>
+  <div class="sam-row" id="row-dominance"></div>
+  <div class="ends"><span>Controlled / Submissive</span><span>In Control / Dominant</span></div>
+</div>
+
+<div class="ros-card">
+  <div class="ros-head">
+    <div class="dot-live"></div>
+    <span class="ros-label">ROS2 topic</span>
+    <span class="ros-topic">/sam/pad_values</span>
+  </div>
+  <pre class="payload" id="payload">Awaiting ratings...</pre>
+  <div class="ts" id="ros-ts"></div>
+</div>
+</div>
+
+<script>
+// ── SAM SVG generators faithful to Bradley & Lang 1994 ──────────────────
+
+// VALENCE: frowning (1) → neutral (3) → smiling (5)
+// Key features: mouth curve, eyebrows, body posture
+function svgValence(level, h) {
+  const t = (level-1)/4; // 0..1 across 5 figures
+  // mouth: frown at t=0, flat at t=0.5, smile at t=1
+  const mouthCP = 20 - t*10; // control point Y: 20=frown, 15=flat→smile
+  const mouthY  = 17;
+  // eyebrows: angled down-middle for frown, flat for neutral, up-outer for smile
+  const browAngle = (t - 0.5) * 4; // negative=frown brows, positive=smile brows
+  const eyeY = 10;
+  // body: slumped vs upright
+  const shoulderDrop = (1-t) * 3;
+  const col = '#444';
+  return `<svg width="44" height="${h}" viewBox="0 0 44 ${h}" xmlns="http://www.w3.org/2000/svg">
+    <!-- head -->
+    <circle cx="22" cy="9" r="7.5" fill="none" stroke="${col}" stroke-width="1.4"/>
+    <!-- eyes -->
+    <ellipse cx="18.5" cy="${eyeY}" rx="1" ry="${t>0.5?1.2:0.7}" fill="${col}"/>
+    <ellipse cx="25.5" cy="${eyeY}" rx="1" ry="${t>0.5?1.2:0.7}" fill="${col}"/>
+    <!-- eyebrows -->
+    <path d="M16,${7.5-browAngle} Q18.5,${7.5+browAngle*0.5},21,${7.5-browAngle}" stroke="${col}" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M23,${7.5-browAngle} Q25.5,${7.5+browAngle*0.5},28,${7.5-browAngle}" stroke="${col}" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <!-- mouth -->
+    <path d="M17.5,${mouthY} Q22,${mouthCP},26.5,${mouthY}" stroke="${col}" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+    <!-- neck -->
+    <line x1="22" y1="17" x2="22" y2="21" stroke="${col}" stroke-width="1.3"/>
+    <!-- torso -->
+    <line x1="22" y1="21" x2="22" y2="34" stroke="${col}" stroke-width="1.4"/>
+    <!-- arms — droop when unhappy, raise when happy -->
+    <line x1="22" y1="24" x2="${13-t*2}" y2="${28+shoulderDrop}" stroke="${col}" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="22" y1="24" x2="${31+t*2}" y2="${28+shoulderDrop}" stroke="${col}" stroke-width="1.3" stroke-linecap="round"/>
+    <!-- legs -->
+    <line x1="22" y1="34" x2="17" y2="${h-2}" stroke="${col}" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="22" y1="34" x2="27" y2="${h-2}" stroke="${col}" stroke-width="1.3" stroke-linecap="round"/>
+  </svg>`;
+}
+
+// AROUSAL: sleepy/eyes-closed/slumped (1) → wide-eyed/starburst on chest (5)
+function svgArousal(level, h) {
+  const t = (level-1)/4;
+  const col = '#444';
+  // eye openness
+  const eyeRy = t < 0.25 ? 0.3 : t < 0.5 ? 0.8 : t < 0.75 ? 1.4 : 2.0;
+  // starburst size on chest — key Bradley&Lang feature
+  const starR = t * 9;
+  // head tilt (sleepy = tilted, alert = upright)
+  const tiltX = (1-t)*3;
+  // zz lines for sleep
+  const showZzz = t < 0.3;
+  let star = '';
+  if (starR > 1) {
+    const cx=22, cy=27, n=8;
+    let pts='';
+    for(let i=0;i<n*2;i++){
+      const angle = (i*Math.PI/n) - Math.PI/2;
+      const r = i%2===0 ? starR : starR*0.45;
+      pts += `${(cx+Math.cos(angle)*r).toFixed(1)},${(cy+Math.sin(angle)*r).toFixed(1)} `;
+    }
+    star = `<polygon points="${pts.trim()}" fill="${col}" opacity="${0.12+t*0.3}" stroke="${col}" stroke-width="0.8"/>`;
+  }
+  let zzz = showZzz ? `<text x="30" y="8" font-size="7" fill="${col}" opacity=".5" font-family="serif">zz</text>` : '';
+  return `<svg width="44" height="${h}" viewBox="0 0 44 ${h}" xmlns="http://www.w3.org/2000/svg">
+    <!-- head (slight tilt when sleepy) -->
+    <circle cx="${22-tiltX*0.3}" cy="9" r="7.5" fill="none" stroke="${col}" stroke-width="1.4"/>
+    <!-- eyes: closed line when sleepy, open circles when aroused -->
+    ${t < 0.15
+      ? `<line x1="17" y1="10" x2="20" y2="10" stroke="${col}" stroke-width="1.2"/>
+         <line x1="24" y1="10" x2="27" y2="10" stroke="${col}" stroke-width="1.2"/>`
+      : `<ellipse cx="18.5" cy="10" rx="1.1" ry="${eyeRy}" fill="${col}"/>
+         <ellipse cx="25.5" cy="10" rx="1.1" ry="${eyeRy}" fill="${col}"/>`}
+    ${zzz}
+    <!-- neck -->
+    <line x1="22" y1="17" x2="22" y2="21" stroke="${col}" stroke-width="1.3"/>
+    <!-- torso -->
+    <line x1="22" y1="21" x2="22" y2="34" stroke="${col}" stroke-width="1.4"/>
+    <!-- starburst explosion on chest -->
+    ${star}
+    <!-- arms -->
+    <line x1="22" y1="24" x2="${14-t*1}" y2="${29-t*3}" stroke="${col}" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="22" y1="24" x2="${30+t*1}" y2="${29-t*3}" stroke="${col}" stroke-width="1.3" stroke-linecap="round"/>
+    <!-- legs -->
+    <line x1="22" y1="34" x2="17" y2="${h-2}" stroke="${col}" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="22" y1="34" x2="27" y2="${h-2}" stroke="${col}" stroke-width="1.3" stroke-linecap="round"/>
+  </svg>`;
+}
+
+// DOMINANCE: very small figure (1) → very large figure (5)
+// The SIZE of the manikin is the ONLY cue — identical neutral posture, just scaled
+function svgDominance(level, h) {
+  const t = (level-1)/4; // 0..1
+  const scale = 0.35 + t * 0.65; // 35%..100% of full size
+  const col = '#444';
+  // All figures drawn at same "full" coordinates, then scaled around bottom-center
+  const bx = 22, by = h; // scale origin = bottom center
+  const s = scale;
+  // figure points in full size relative to center-bottom
+  const head = {cx:0, cy:-(h-9), r:7.5*s};
+  const sx = bx, sy = by;
+  return `<svg width="44" height="${h}" viewBox="0 0 44 ${h}" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(${sx},${sy}) scale(${s}) translate(${-sx/s},${-sy/s})">
+      <circle cx="22" cy="9" r="7.5" fill="none" stroke="${col}" stroke-width="${1.4/s}"/>
+      <ellipse cx="18.5" cy="10" rx="1" ry="1" fill="${col}"/>
+      <ellipse cx="25.5" cy="10" rx="1" ry="1" fill="${col}"/>
+      <path d="M18,16 Q22,18,26,16" stroke="${col}" stroke-width="${1.2/s}" fill="none" stroke-linecap="round"/>
+      <line x1="22" y1="17" x2="22" y2="21" stroke="${col}" stroke-width="${1.3/s}"/>
+      <line x1="22" y1="21" x2="22" y2="34" stroke="${col}" stroke-width="${1.4/s}"/>
+      <line x1="22" y1="24" x2="13" y2="29" stroke="${col}" stroke-width="${1.3/s}" stroke-linecap="round"/>
+      <line x1="22" y1="24" x2="31" y2="29" stroke="${col}" stroke-width="${1.3/s}" stroke-linecap="round"/>
+      <line x1="22" y1="34" x2="17" y2="${h-2}" stroke="${col}" stroke-width="${1.3/s}" stroke-linecap="round"/>
+      <line x1="22" y1="34" x2="27" y2="${h-2}" stroke="${col}" stroke-width="${1.3/s}" stroke-linecap="round"/>
+    </g>
+  </svg>`;
+}
+
+const DIMS = [
+  { id:'valence',   fn: svgValence,   h:[42,46,50,54,58], col:'#1D9E75' },
+  { id:'arousal',   fn: svgArousal,   h:[42,46,50,54,58], col:'#378ADD' },
+  { id:'dominance', fn: svgDominance, h:[30,38,46,54,62], col:'#D85A30' },
+];
+
+const state = { valence: null, arousal: null, dominance: null };
+
+// Build each row: fig | gap | fig | gap | fig | gap | fig | gap | fig
+// Figures = odd indices 1,3,5,7,9 → scores 1,3,5,7,9
+// Gaps    = even indices 2,4,6,8   → scores 2,4,6,8
+function buildRow(dim) {
+  const row = document.getElementById('row-' + dim.id);
+  row.innerHTML = '';
+  const maxH = Math.max(...dim.h);
+
+  for (let pos = 0; pos < 9; pos++) {
+    const score = pos + 1;
+    const isFigure = pos % 2 === 0; // positions 0,2,4,6,8 → scores 1,3,5,7,9
+    const figIdx = pos / 2 | 0;      // 0..4
+
+    const cell = document.createElement('div');
+
+    if (isFigure) {
+      cell.className = 'sam-cell figure';
+      cell.style.height = maxH + 16 + 'px';
+      cell.style.justifyContent = 'flex-end';
+      cell.innerHTML = dim.fn(figIdx + 1, dim.h[figIdx]);
+      const lbl = document.createElement('div');
+      lbl.className = 'val-label';
+      lbl.textContent = score;
+      cell.appendChild(lbl);
+    } else {
+      cell.className = 'sam-cell between';
+      cell.style.height = maxH + 16 + 'px';
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      cell.appendChild(dot);
+      const lbl = document.createElement('div');
+      lbl.className = 'val-label';
+      lbl.textContent = score;
+      cell.appendChild(lbl);
+    }
+
+    cell.addEventListener('click', () => select(dim.id, score));
+    row.appendChild(cell);
+  }
+}
+
+function select(dimId, score) {
+  state[dimId] = score;
+  const dim = DIMS.find(d => d.id === dimId);
+  const row = document.getElementById('row-' + dimId);
+  row.querySelectorAll('.sam-cell').forEach((cell, i) => {
+    const cellScore = i + 1;
+    cell.classList.toggle('selected', cellScore === score);
+  });
+  document.getElementById('score-' + dimId).textContent = score;
+  updateROS();
+}
+
+function updateROS() {
+  const p = state.valence   ?? '—';
+  const a = state.arousal   ?? '—';
+  const d = state.dominance ?? '—';
+  const ts = new Date().toISOString();
+  const allSet = p !== '—' && a !== '—' && d !== '—';
+  document.getElementById('payload').textContent = allSet
+    ? `pleasure:   ${p}\narousal:    ${a}\ndominance:  ${d}`
+    : `pleasure:   ${p}\narousal:    ${a}\ndominance:  ${d}\n\n(waiting for all three ratings)`;
+  document.getElementById('ros-ts').textContent = allSet
+    ? `→ /sam/pad_values  ·  ${ts}`
+    : '';
+}
+
+DIMS.forEach(buildRow);
+updateROS();
+</script>
