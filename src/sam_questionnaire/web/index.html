@@ -18,7 +18,16 @@
   --ok: #22a06b;
   --bad: #d64545;
   --shadow: 0 1px 2px rgba(20, 20, 20, .04), 0 4px 16px rgba(20, 20, 20, .05);
-  --radius: 16px;
+  --panel: #faf9f7;
+  --line: #8c8780;
+  --track: #faf9f7;
+  --thumb: #9b3a22;
+  --thumb-fill: #faece8;
+  --gap: 8px;
+  --thumb-w: 46px;
+  --thumb-h: 50px;
+  --track-h: 20px;
+  --page-max: clamp(560px, calc((100dvh - 640px) / 3.25 * 5 + 92px), 860px);
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
@@ -33,6 +42,11 @@
     --arousal: #6aa3f0;
     --dominance: #ef8354;
     --shadow: none;
+    --panel: #1e2125;
+    --line: #5d636a;
+    --track: #15171a;
+    --thumb: #e3805f;
+    --thumb-fill: #3b2621;
     color-scheme: dark;
   }
 }
@@ -43,11 +57,11 @@ body {
   color: var(--text);
   -webkit-font-smoothing: antialiased;
 }
-.page { max-width: 880px; margin: 0 auto; padding: 20px 16px 32px; }
+.page { max-width: var(--page-max); margin: 0 auto; padding: 12px 16px 12px; }
 
 /* ── header ─────────────────────────────────────────── */
-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
-h1 { font-size: 1.5rem; font-weight: 650; letter-spacing: -.01em; }
+header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+h1 { font-size: 1.35rem; font-weight: 650; letter-spacing: -.01em; }
 .lede { color: var(--text-2); margin-top: 2px; }
 .session { position: relative; flex-shrink: 0; }
 .session summary {
@@ -74,67 +88,64 @@ h1 { font-size: 1.5rem; font-weight: 650; letter-spacing: -.01em; }
 .session-panel .meta { color: var(--text-3); font-size: .78rem; line-height: 1.5; }
 .session-panel code { font-size: .75rem; }
 
-/* ── dimension cards ────────────────────────────────── */
-.dim {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  box-shadow: var(--shadow); padding: 16px 20px 14px; margin-bottom: 14px;
-  border-top: 4px solid var(--accent);
+/* ── questionnaire panel ────────────────────────────── */
+/* Pictogram size: each pictogram is (panel width - gaps) / 5. The panel
+   grows with the window height so all three questions fit without
+   scrolling where possible (between 560px and 860px wide) - change the
+   numbers in --page-max (in :root) to make the pictograms smaller/larger. */
+.panel {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 20px;
+  box-shadow: var(--shadow); padding: 12px 24px 14px; margin-bottom: 10px;
 }
-.dim-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-.dim-name { font-size: 1.05rem; font-weight: 620; }
-.dim-q { color: var(--text-2); font-size: .9rem; }
-.dim-score {
-  font-size: 1.6rem; font-weight: 700; color: var(--accent); min-width: 1.5ch; text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-.dim-score.empty { color: var(--text-3); font-weight: 400; }
+.dim + .dim { margin-top: 10px; }
+.dim-q { text-align: center; font-size: 1.2rem; font-weight: 500; margin-bottom: 4px; }
 
-.scale { display: grid; grid-template-columns: repeat(9, 1fr); margin-top: 6px; }
-/* .figs { align-items: end; height: clamp(88px, 17vw, 132px); } */
-.figs { align-items: end; height: clamp(110px, 20vw, 160px); }
-.fig {
-  grid-row: 1; display: flex; justify-content: center; align-items: flex-end; height: 100%;
-  cursor: pointer; overflow: visible; -webkit-tap-highlight-color: transparent;
+/* figs, slider and ticks share the same inner width (dashed border 1px +
+   padding 4px on .figs = 5px inline margin on the others), so the 9 slider
+   positions line up with the pictograms: 1,3,5,7,9 = pictogram centres. */
+.figs {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--gap);
+  padding: 4px; border: 1px dashed var(--line); border-radius: 12px;
 }
+.fig { cursor: pointer; border-radius: 10px; -webkit-tap-highlight-color: transparent; }
 .fig img {
-  flex: none; max-height: 100%; max-width: 180%; height: auto; width: auto;
-  object-fit: contain; border-radius: 10px;
-  transition: transform .15s ease, filter .15s ease, outline-color .15s ease;
-  outline: 3px solid transparent; outline-offset: 3px;
+  display: block; width: 100%; height: auto; border-radius: 10px;
+  outline: 3px solid transparent; outline-offset: 1px;
+  transition: outline-color .15s ease, transform .15s ease;
 }
-.fig:hover img { transform: translateY(-2px); }
-.fig.selected img {
-  transform: scale(1.06);
-  outline-color: var(--accent);
-  filter: drop-shadow(0 4px 10px color-mix(in srgb, var(--accent) 50%, transparent));
-}
+.fig.near img { outline-color: var(--thumb); }
 
-.ticks { margin-top: 8px; position: relative; }
-.ticks::before {
-  content: ""; position: absolute; left: calc(100% / 18); right: calc(100% / 18); top: 50%;
-  height: 2px; background: var(--border); transform: translateY(-50%);
+.slider {
+  position: relative; height: var(--thumb-h); margin: 8px 5px 0;
+  cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent; outline: none;
 }
-.tick { display: flex; justify-content: center; position: relative; }
-.tick input { position: absolute; opacity: 0; pointer-events: none; }
-.tick span {
-  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
-  background: var(--surface); border: 2px solid var(--border); color: var(--text-2);
-  font-size: .9rem; font-weight: 600; cursor: pointer; font-variant-numeric: tabular-nums;
-  transition: background .12s, border-color .12s, color .12s, transform .12s;
+.track {
+  position: absolute; left: 0; right: 0; top: 50%; height: var(--track-h); transform: translateY(-50%);
+  background: var(--track); border: 1px solid var(--line); border-radius: 999px;
 }
-.tick.minor span { width: 26px; height: 26px; font-size: .75rem; margin: 4px 0; }
-.tick span:hover { border-color: var(--accent); color: var(--accent); }
-.tick input:checked + span { background: var(--accent); border-color: var(--accent); color: #fff; transform: scale(1.1); }
-.tick input:focus-visible + span { outline: 3px solid color-mix(in srgb, var(--accent) 40%, transparent); outline-offset: 2px; }
+.thumb {
+  position: absolute; top: 0; width: var(--thumb-w); height: 100%; transform: translateX(-50%);
+  background: var(--thumb-fill); border: 2px solid var(--thumb); border-radius: 10px;
+  transition: left .12s ease;
+}
+.slider.unset .thumb { display: none; }
+.slider.dragging .thumb { transition: none; }
+.slider:focus-visible .track { outline: 3px solid color-mix(in srgb, var(--thumb) 40%, transparent); outline-offset: 3px; }
 
-.ends { display: flex; justify-content: space-between; margin-top: 8px; font-size: .82rem; color: var(--text-3); }
+.ticks { position: relative; height: 16px; margin: 4px 5px 0; }
+.tick { position: absolute; top: 0; width: 1px; height: 9px; background: var(--line); }
+.tick.major { height: 16px; }
+
+.ends { display: flex; justify-content: space-between; gap: 16px; margin-top: 2px; font-size: .95rem; color: var(--text-2); }
+.ends span:last-child { text-align: right; }
 
 /* ── submit ─────────────────────────────────────────── */
 .actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 6px; }
 .hint { color: var(--text-3); font-size: .9rem; }
 button.submit {
   font: inherit; font-weight: 620; font-size: 1.05rem; color: #fff; background: var(--text);
-  border: 0; border-radius: 12px; padding: 13px 34px; cursor: pointer; transition: opacity .15s, transform .1s;
+  border: 0; border-radius: 12px; padding: 9px 30px; cursor: pointer; transition: opacity .15s, transform .1s;
 }
 @media (prefers-color-scheme: dark) { button.submit { color: var(--bg); } }
 button.submit:disabled { opacity: .25; cursor: not-allowed; }
@@ -162,9 +173,10 @@ button.submit:not(:disabled):active { transform: scale(.98); }
 
 @media (max-width: 560px) {
   header { flex-direction: column; }
-  .dim { padding: 14px 12px 12px; }
-  .tick span { width: 28px; height: 28px; font-size: .8rem; }
-  .tick.minor span { width: 20px; height: 20px; font-size: .65rem; margin: 4px 0; }
+  :root { --gap: 5px; --thumb-w: 36px; --thumb-h: 46px; --track-h: 18px; }
+  .panel { padding: 12px 10px 14px; }
+  .dim-q { font-size: 1.1rem; }
+  .ends { font-size: .8rem; }
   .actions { flex-direction: column-reverse; align-items: stretch; text-align: center; }
 }
 </style>
@@ -174,7 +186,7 @@ button.submit:not(:disabled):active { transform: scale(.98); }
   <header>
     <div>
       <h1>How do you feel right now?</h1>
-      <p class="lede">For each row, pick the figure that best matches how you feel. You can also pick a number between two figures.</p>
+      <p class="lede">Tap or drag each slider to show how you feel.</p>
     </div>
     <details class="session" id="session">
       <summary><span class="status-dot" id="status-dot"></span><span id="session-summary">Session</span></summary>
@@ -188,10 +200,10 @@ button.submit:not(:disabled):active { transform: scale(.98); }
     </details>
   </header>
 
-  <main id="dims"></main>
+  <main class="panel" id="dims"></main>
 
   <div class="actions">
-    <span class="hint" id="hint">Rate all three rows to continue</span>
+    <span class="hint" id="hint">Answer all three questions to continue</span>
     <button class="submit" id="submit" disabled>Submit</button>
   </div>
 </div>
@@ -205,7 +217,8 @@ button.submit:not(:disabled):active { transform: scale(.98); }
 // ── Questionnaire ────────────────────────────────────────────────────────
 // Figures are photographed/illustrated SAM pictograms in web/img/, named
 // <dimension>_<anchor>.png for anchor in 1..5 (installed from resource/png/
-// via setup.py). Anchors 1,3,5,7,9 on the 1-9 scale map to pictograms 1-5.
+// via setup.py). Each question is a 9-point slider under its 5 pictograms:
+// positions 1,3,5,7,9 sit under pictograms 1-5, the even ones between them.
 const DIMS = [
   { id: 'valence', name: 'Pleasure', q: 'How unhappy or happy do you feel?',
     low: 'Unhappy · annoyed · sad', high: 'Happy · pleased · satisfied' },
@@ -215,6 +228,9 @@ const DIMS = [
     low: 'Controlled · influenced', high: 'In control · influential' },
 ];
 const anchorOf = v => Math.round((v - 1) / 2) + 1; // scale value 1,3,5,7,9 -> pictogram 1..5
+// Horizontal position of scale value v (1..9) inside a 5-column grid with
+// --gap between columns: the centre of pictogram (v-1)/2, fractional for even v.
+const posOf = v => { const a = (v - 1) / 2; return `calc((100% - 4 * var(--gap)) * ${(a + .5) / 5} + ${a} * var(--gap))`; };
 
 const state = {};
 let shownAt = 0, shownIso = '', nChanges = 0, submitting = false;
@@ -225,66 +241,138 @@ function build() {
   for (const d of DIMS) {
     const card = document.createElement('section');
     card.className = 'dim';
-    card.style.setProperty('--accent', `var(--${d.id})`);
     let figs = '', ticks = '';
     for (let v = 1; v <= 9; v++) {
       if (v % 2) {
-        figs += `<label class="fig" for="${d.id}-${v}" style="grid-column:${v}" data-v="${v}" title="${v}">
-          <img src="img/${d.id}_${anchorOf(v)}.png" alt="${d.name} ${v}" draggable="false"></label>`;
+        figs += `<div class="fig" data-v="${v}" title="${v}">
+          <img src="img/${d.id}_${anchorOf(v)}.png" alt="${d.name} ${v}" draggable="false"></div>`;
       }
-      ticks += `<label class="tick ${v % 2 ? '' : 'minor'}">
-        <input type="radio" name="${d.id}" id="${d.id}-${v}" value="${v}" aria-label="${d.name} ${v}">
-        <span>${v}</span></label>`;
+      ticks += `<span class="tick ${v % 2 ? 'major' : ''}" style="left:${posOf(v)}"></span>`;
     }
     card.innerHTML = `
-      <div class="dim-head">
-        <div><div class="dim-name">${d.name}</div><div class="dim-q">${d.q}</div></div>
-        <div class="dim-score empty" id="score-${d.id}">–</div>
-      </div>
-      <div class="scale figs" role="presentation">${figs}</div>
-      <div class="scale ticks" role="radiogroup" aria-label="${d.name}">${ticks}</div>
+      <h2 class="dim-q" id="q-${d.id}">${d.q}</h2>
+      <div class="figs">${figs}</div>
+      <div class="slider unset" id="slider-${d.id}" role="slider" tabindex="0" aria-labelledby="q-${d.id}"
+           aria-valuemin="1" aria-valuemax="9" aria-valuetext="not answered">
+        <div class="track"></div><div class="thumb"></div></div>
+      <div class="ticks" aria-hidden="true">${ticks}</div>
       <div class="ends"><span>${d.low}</span><span>${d.high}</span></div>`;
-    card.addEventListener('change', e => select(d.id, +e.target.value));
     main.appendChild(card);
+    bindSlider(d, card);
   }
+}
+
+// Value under a pointer x position: inverse of posOf(), rounded to the
+// nearest of the 9 positions.
+function valueAt(slider, clientX) {
+  const r = slider.getBoundingClientRect();
+  const gap = parseFloat(getComputedStyle(slider).getPropertyValue('--gap')) || 0;
+  const col = (r.width - 4 * gap) / 5;
+  const a = (clientX - r.left - col / 2) / (col + gap);
+  return Math.min(9, Math.max(1, Math.round(2 * a) + 1));
+}
+
+// The slider starts with no thumb, so there is no default value to anchor
+// the answer and "not answered yet" can't be confused with a real 5. Tapping
+// the track places the thumb there; dragging moves it in 9 steps. Only the
+// position at release counts as a selection (one /sam/events "select" per
+// release, not one per step while dragging).
+function bindSlider(d, card) {
+  const slider = card.querySelector('.slider');
+  let dragValue = null;
+  slider.addEventListener('pointerdown', e => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    slider.setPointerCapture(e.pointerId);
+    slider.classList.add('dragging');
+    slider.focus({ preventScroll: true });
+    dragValue = valueAt(slider, e.clientX);
+    show(d.id, dragValue);
+  });
+  slider.addEventListener('pointermove', e => {
+    if (!slider.hasPointerCapture(e.pointerId)) return;
+    const v = valueAt(slider, e.clientX);
+    if (v !== dragValue) { dragValue = v; show(d.id, v); }
+  });
+  slider.addEventListener('pointerup', e => {
+    if (!slider.hasPointerCapture(e.pointerId)) return;
+    slider.releasePointerCapture(e.pointerId);
+    slider.classList.remove('dragging');
+    commit(d.id, dragValue);
+  });
+  slider.addEventListener('pointercancel', () => {
+    slider.classList.remove('dragging');
+    show(d.id, state[d.id]);
+  });
+  slider.addEventListener('keydown', e => {
+    const cur = state[d.id];
+    const step = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1, PageDown: -2, PageUp: 2 }[e.key];
+    let v;
+    if (e.key === 'Home') v = 1;
+    else if (e.key === 'End') v = 9;
+    else if (step) v = cur == null ? 5 : Math.min(9, Math.max(1, cur + step));
+    else return;
+    e.preventDefault();
+    commit(d.id, v);
+  });
+  // Tapping a pictogram puts the thumb under it.
+  card.querySelectorAll('.fig').forEach(f => f.addEventListener('click', () => commit(d.id, +f.dataset.v)));
+}
+
+// Draw one question's slider at value v (null = no thumb).
+function show(dim, v) {
+  const slider = $('slider-' + dim);
+  slider.classList.toggle('unset', v == null);
+  slider.querySelector('.thumb').style.left = v == null ? '' : posOf(v);
+  if (v == null) {
+    slider.removeAttribute('aria-valuenow');
+    slider.setAttribute('aria-valuetext', 'not answered');
+  } else {
+    slider.setAttribute('aria-valuenow', v);
+    slider.setAttribute('aria-valuetext', String(v));
+  }
+  // Highlight the pictogram(s) the thumb is under: one for 1,3,5,7,9, the
+  // two neighbours for an in-between value.
+  slider.closest('.dim').querySelectorAll('.fig').forEach(f =>
+    f.classList.toggle('near', v != null && Math.abs(+f.dataset.v - v) <= 1));
+}
+
+function commit(dim, v) {
+  if (v === state[dim]) return show(dim, v);
+  select(dim, v);
 }
 
 function select(dim, v) {
   state[dim] = v;
   nChanges++;
-  const score = $('score-' + dim);
-  score.textContent = v;
-  score.classList.remove('empty');
-  document.querySelectorAll(`.fig[for^="${dim}-"]`).forEach(f => f.classList.toggle('selected', +f.dataset.v === v));
+  show(dim, v);
   sendEvent({ type: 'select', dimension: dim, value: v });
   refresh();
-  // Auto-publish as soon as all three rows are answered - no Submit click
-  // needed. Only triggered here, from a real user selection, NEVER from
-  // refresh() itself - submit() calls refresh() internally (to update the
-  // button/hint while it's in flight and again when it's done), and if the
-  // auto-submit check lived in refresh() that created a feedback loop:
+  // Auto-publish as soon as all three questions are answered - no Submit
+  // click needed. Only triggered here, from a real user selection, NEVER
+  // from refresh() itself - submit() calls refresh() internally (to update
+  // the button/hint while it's in flight and again when it's done), and if
+  // the auto-submit check lived in refresh() that created a feedback loop:
   // submit()'s own finally-block refresh() would see all three answers
   // still set (reset() only clears them ~1.8s later, after the "Thank
   // you" message) and `submitting` already back to false, so it would
   // re-trigger submit() immediately, over and over, as fast as the HTTP
-  // round-trip allowed. Gating this on the change event instead of on
-  // every refresh() fixes that - submit() never calls select().
+  // round-trip allowed. Gating this on a selection instead of on every
+  // refresh() fixes that - submit() never calls select().
   if (DIMS.every(d => state[d.id] != null) && !submitting) submit();
 }
 
 function refresh() {
   const missing = DIMS.filter(d => state[d.id] == null).length;
   $('submit').disabled = missing > 0 || submitting;
-  $('hint').textContent = missing ? `Rate ${missing === 3 ? 'all three rows' : missing + ' more row' + (missing > 1 ? 's' : '')} to continue` : 'Ready to submit';
+  $('hint').textContent = missing ? `Answer ${missing === 3 ? 'all three questions' : missing + ' more question' + (missing > 1 ? 's' : '')} to continue` : 'Ready to submit';
 }
 
 function reset() {
   for (const d of DIMS) {
     delete state[d.id];
-    document.querySelectorAll(`input[name="${d.id}"]`).forEach(i => (i.checked = false));
-    const s = $('score-' + d.id); s.textContent = '–'; s.classList.add('empty');
+    show(d.id, null);
   }
-  document.querySelectorAll('.fig.selected').forEach(f => f.classList.remove('selected'));
   nChanges = 0;
   shownAt = Date.now();
   shownIso = new Date(shownAt).toISOString();
